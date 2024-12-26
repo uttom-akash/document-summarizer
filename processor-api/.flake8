@@ -1,0 +1,12 @@
+[flake8]
+exclude = 
+    .git,
+    __pycache__,
+    site-packages
+
+ignore = 
+    E501,
+    W503,
+    W293,
+    E302,
+    W291

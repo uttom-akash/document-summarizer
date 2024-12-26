@@ -1,0 +1,28 @@
+# Ignore the Go binary files (if already built)
+**/*.exe
+**/*.out
+**/*.test
+**/bin/
+**/obj/
+
+# Ignore vendor directory (if you are using Go Modules)
+vendor/
+
+# Ignore Go's build artifacts
+*.go.sum
+*.go.mod
+
+# Ignore build directories (e.g., from running `go build`)
+/build/
+ 
+# Ignore IDE/Editor config files
+.idea/
+.vscode/
+
+# Ignore logs
+*.log
+
+# Ignore temporary files
+*.tmp
+*.swp
+*~

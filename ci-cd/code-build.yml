@@ -1,0 +1,91 @@
+version: 0.2
+
+env:
+  variables:
+    DOCKER_REPO: "i7akash"
+    DOCKER_USER: "i7akash"
+    DOCKER_PASS: "*"
+
+phases:
+  install:
+    runtime-versions:
+      golang: 1.23.3
+      python: 3.8
+    commands:
+      - echo Installing Docker...
+      - apt-get update
+      - apt-get install -y docker.io
+
+       # Install Rust manually
+      - echo Installing Rust...
+      - curl https://sh.rustup.rs -sSf | sh -s -- -y
+      - . $HOME/.cargo/env   # Use '.' instead of 'source'
+      - rustc --version
+      - cargo --version
+
+      # Docker login
+      - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
+  pre_build:
+    commands:
+      - echo Generating build version...
+      - BUILD_TAG=$(date +%Y%m%d%H%M%S)  # Use timestamp as tag
+      # - echo Build Tag: $BUILD_TAG
+      - DOCKER_IMAGE_GOLANG="${DOCKER_REPO}/storage-api:$BUILD_TAG"
+      - DOCKER_IMAGE_FLASK="${DOCKER_REPO}/processor-api:$BUILD_TAG"
+      - DOCKER_IMAGE_RUST="${DOCKER_REPO}/gateway-api:$BUILD_TAG"
+
+      # Build Storage API
+      - echo Building Storage API...
+      - cd storage-api && go mod tidy && go build -o storage-api && cd ..
+
+      # Build Processor API
+      - echo Building Processor API...
+      - cd processor-api && pip install -r requirements.txt && cd ..
+
+      # Build API Gateway
+      - echo Building API Gateway...
+      - cd api-gateway && cargo build --release && cd ..
+
+  build:
+    commands:
+      # Build and Tag Storage API Docker Image
+      - echo Building Docker image for Storage API...
+      - cd storage-api
+      - docker build -t $DOCKER_IMAGE_GOLANG .
+      - docker tag $DOCKER_IMAGE_GOLANG ${DOCKER_REPO}/storage-api:latest
+      - cd ..
+
+      # Build and Tag Processor API Docker Image
+      - echo Building Docker image for Processor API...
+      - cd processor-api
+      - docker build -t $DOCKER_IMAGE_FLASK .
+      - docker tag $DOCKER_IMAGE_FLASK ${DOCKER_REPO}/processor-api:latest
+      - cd ..
+
+      # Build and Tag Rust API Gateway Docker Image
+      - echo Building Docker image for Rust Gateway API...
+      - cd api-gateway
+      - docker build -t $DOCKER_IMAGE_RUST .
+      - docker tag $DOCKER_IMAGE_RUST ${DOCKER_REPO}/gateway-api:latest
+      - cd ..
+
+  post_build:
+    commands:
+      # Push Docker images to Docker Hub
+      - echo Pushing Docker image for Storage API...
+      - docker push $DOCKER_IMAGE_GOLANG
+      - docker push ${DOCKER_REPO}/storage-api:latest
+
+      - echo Pushing Docker image for Processor API...
+      - docker push $DOCKER_IMAGE_FLASK
+      - docker push ${DOCKER_REPO}/processor-api:latest
+
+      - echo Pushing Docker image for Rust Gateway API...
+      - docker push $DOCKER_IMAGE_RUST
+      - docker push ${DOCKER_REPO}/gateway-api:latest
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: yes

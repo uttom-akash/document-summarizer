@@ -1,0 +1,97 @@
+# Go
+# Ignore the Go binary output
+/bin/
+/obj/
+/out/
+/*.exe
+/*.exe~
+/*.dll
+/*.so
+/*.dylib
+
+# Go module files
+/vendor/
+
+# Golang IDE or editor config
+.idea/
+.vscode/
+*.iml
+
+# Rust
+# Ignore the Rust build output
+*/target/
+
+
+# Rust IDE or editor config
+.idea/
+.vscode/
+*.iml
+
+# .NET specific
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.pdb
+*.exe
+*.cache
+*.suo
+*.user
+*.vs/
+
+# Python
+# Ignore Python bytecode files
+__pycache__/
+/*.py[cod]
+/*.pyo
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Flask specific
+instance/
+*.log
+*.sqlite3
+
+# IDE/editor config
+.idea/
+.vscode/
+*.iml
+
+# OS-specific
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+doc-summarizer-kp.pem
+*/summaries
+*/temp
+
+
+doc-summarizer-kp.pem
+scripts/
+*.env
+.env
+
+*/bin
+*/obj
+
+# Environment files
+**/.env
+**/*.env
+.env
+
+# Binary and build output directories
+**/bin/
+**/obj/
+bin/
+obj/
+

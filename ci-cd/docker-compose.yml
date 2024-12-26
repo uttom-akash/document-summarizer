@@ -1,0 +1,66 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    networks:
+      - docnet
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  doc-processor-flask:
+    image: i7akash/processor-flask-api:1.8
+    networks:
+      - docnet
+    ports:
+      - 5000:5000
+    volumes:
+      - summaries:/processor-api/summaries
+    environment:
+      - HUGGING_FACE_TOKEN=
+      - AWS_ACCESS_KEY_ID= 
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_DEFAULT_REGION=eu-north-1 
+      - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672/
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+    depends_on:
+      - rabbitmq
+  
+  
+  storage-go-api:
+    image: i7akash/storage-go-api:1.1
+    networks:
+      - docnet
+    ports:
+      - 8081:8081
+    environment:
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_DEFAULT_REGION=eu-north-1 
+      - RABBIT_MQ_URL=amqp://guest:guest@rabbitmq:5672/ 
+    depends_on:
+      - rabbitmq
+    
+  api-gateway-rust:
+    image: i7akash/api-gateway-rust:1.2
+    networks:
+      - docnet
+    ports:
+      - 3000:3000
+  
+  doc-prom:
+    image: i7akash/doc-prom:1.2
+    ports:
+      - 9000:9090
+  
+
+volumes:
+  summaries:
+
+networks:
+  docnet:
+    driver: bridge

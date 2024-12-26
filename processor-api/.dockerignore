@@ -1,0 +1,9 @@
+*.env
+*/__pycache__/
+__pycache__/
+/*.py[cod]
+/*.pyo
+/venv/
+/logs/*
+/temp/*
+/summaries/*

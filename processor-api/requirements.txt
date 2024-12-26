@@ -1,0 +1,8 @@
+flask
+boto3
+prometheus_client
+PyPDF2
+flask_injector
+huggingface_hub
+python-dotenv
+pika

@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s  # How often to scrape targets by default.
+
+scrape_configs:
+  - job_name: 'flask_app'
+    scrape_interval: 5s  # How often to scrape this specific job.
+    static_configs:
+      - targets: ['rabbitmq:5000']  # Access localhost from Docker.
