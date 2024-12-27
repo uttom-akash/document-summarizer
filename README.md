@@ -1,3 +1,11 @@
+## Document Summarizer
+
+### Todos
+- add notification features
+- Docker network
+- setup prometheus with all services
+- deply them on an ec2 instance
+
 | **Microservice**                    | **Language** | **Key Strengths**                                                                    |
 | ----------------------------------- | ------------ | ------------------------------------------------------------------------------------ |
 | **API Gateway**                     | Rust         | High performance, safe concurrency, minimal latency.                                 |
@@ -6,7 +14,3 @@
 | **Processor Service**      | Python       | AI/ML capabilities, strong NLP libraries, rapid prototyping.                         |
 
 
-### Todos
-- Docker network
-- setup prometheus with all services
-- deply them on an ec2 instance
