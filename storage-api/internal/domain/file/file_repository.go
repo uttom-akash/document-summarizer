@@ -1,4 +1,4 @@
-package file
+package file_domain
 
 type IFileRepository interface {
 	Create(file *File) error

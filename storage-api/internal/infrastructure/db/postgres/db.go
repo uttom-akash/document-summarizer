@@ -3,7 +3,7 @@ package postgres
 import (
 	"log"
 
-	"github.com/uttom-akash/storage/internal/domain/file"
+	file_domain "github.com/uttom-akash/storage/internal/domain/file"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -22,8 +22,8 @@ func createDatabase() {
 
 }
 
-func runMigrations(db *gorm.DB) {
-	err := db.AutoMigrate(&file.File{})
+func RunMigrations(db *gorm.DB) {
+	err := db.AutoMigrate(&file_domain.File{})
 
 	if err != nil {
 		log.Fatalf("migration failed: %v", err)
@@ -32,8 +32,6 @@ func runMigrations(db *gorm.DB) {
 
 func NewDB() (*gorm.DB, error) {
 	db := connectDb()
-
-	runMigrations(db)
 
 	return db, nil
 }

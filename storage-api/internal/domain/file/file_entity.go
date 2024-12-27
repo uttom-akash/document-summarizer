@@ -1,4 +1,4 @@
-package file
+package file_domain
 
 type File struct {
 	Id        string
